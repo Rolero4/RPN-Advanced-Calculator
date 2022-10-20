@@ -17,7 +17,7 @@ let calculator = {
         this.firstOnStack = document.getElementById("firstOnStack");
         this.secondOnStack = document.getElementById("secondOnStack");
         this.stack = [];
-        //console.log(this.firstOnStack.value);
+        //console.log();
 
         document.getElementById("changeOnStack").addEventListener('click', calculator.swap);
         for(let i = 0; i < this.buttons.length; i++){
@@ -52,6 +52,11 @@ let calculator = {
             case "-":
             case "×":
             case "÷": 
+            case "%":
+                calculator.simpleOperand(divHtmlText);
+            break;
+            case "x^y":
+                calculator.exp();
             break;
         }
     },
@@ -60,6 +65,36 @@ let calculator = {
         //let display = calculator.input.value + '';
         //if(display.length < 7 || (display.includes(".") && display.length == 7 && str != 0))
         calculator.input.value += str;
+    },
+
+    simpleOperand: function(operation){
+        if(calculator.stack.length > 1){
+            const first = calculator.stack[1] + '';
+            const second = calculator.stack[0] + '';
+            calculator.stack.shift();
+            calculator.stack.shift();
+
+            if( operation == "÷")
+                operation = "//"; 
+            else if( operation == "×")
+                operation = "*";
+            operation = operation +'';
+
+            const expression = first + operation + second;
+            calculator.stack.unshift(eval(expression));
+            calculator.stackDisplay();
+        }
+    },
+
+    exp: function(){
+        if(calculator.stack.length > 1){
+            const first = calculator.stack[1];
+            const second = calculator.stack[0];
+            calculator.stack.shift();
+            calculator.stack.shift();
+            calculator.stack.unshift(Math.pow(first, second));
+            calculator.stackDisplay();
+        }
     },
 
     //clearing whole calcultor
@@ -71,9 +106,11 @@ let calculator = {
 
 
     enter: function(){
-        this.stack.unshift(this.input.value);
-        calculator.input.value = "";
-        this.stackDisplay();
+        if(calculator.input.value != ""){
+            this.stack.unshift(this.input.value);
+            calculator.input.value = "";
+            this.stackDisplay();
+        }
     },
 
     //stack display
@@ -101,10 +138,5 @@ let calculator = {
             console.log(calculator.stack);
             calculator.stackDisplay();
         }
-    },
-
-    //calculating whole stack
-    evaluate: function(){
-
     },
 }
