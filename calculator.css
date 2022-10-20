@@ -1,0 +1,270 @@
+:root{
+    box-sizing:border-box;
+}
+*, ::after, ::before {
+    box-sizing: inherit;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}   
+
+#calculator{
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: 540px;
+    margin: auto;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+#all-buttons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.input{
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 3.5rem;
+    text-align: right;
+    padding: 2%;
+    border: 1px solid black;
+    border-radius: 10px;
+    overflow: scroll;
+}
+
+.stack{
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    justify-content: space-evenly;
+    align-items: center;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+}
+
+#changeOnStack{
+    color: aliceblue;
+    background: transparent;
+    border: 2px solid aliceblue;
+    border-radius: 10px;
+}
+
+#changeOnStack:active   {
+    background: aliceblue;
+    color: black;
+}
+
+.stackInput{
+    width: 50%;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1%;
+}
+
+.block{
+    display: flex;
+    flex-direction: row;
+}
+
+.button-panel{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.function-panel{
+    display: flex;
+    flex-direction: column;
+}
+
+.btn{
+    width: 60px;
+    height: 60px;
+    float: left;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border: solid black 0.1px;
+    border-radius: 50%;
+    margin: 1px;
+    overflow: hidden;
+}
+
+.side-button{
+    width: 60px;
+    height: 180px;
+    margin: 5px 5px 5px 0px;
+    border-radius: 30px;
+}
+
+.enter{
+    width: 100%;
+    border-radius: 30px;
+    height: auto;
+    padding: 0;
+    margin: 0 auto;
+}
+ 
+.number-button{
+    background-color: rgb(98, 100, 103);
+    color: white
+}
+
+.operation-button{
+    background-color: orange;
+    color: white;
+}
+
+.function-button{
+    border-radius: 30px;
+    background-color: rgb(196, 196, 196);
+
+}
+
+.number-button:active{
+    background-color: rgb(130, 124, 128);
+}
+
+.operation-button:active{
+    background-color: white;
+    color: orange;
+}
+
+.function-button:active{
+    background-color: rgb(230, 228, 228);
+}
+
+
+
+/* małe pionowe */
+@media screen and (max-width: 400px) and (max-height: 540px){
+    #calculator{
+        width: 196px;
+        height: 378px;
+    }
+    .input{
+        font-size: smaller;
+    }
+
+    .block .button-panel .btn{
+        width: 40px;
+        height: 40px;
+    }
+
+    .side-button{
+        height: 120px;
+        width: 40px;
+    }
+
+    .btn{
+        font-size: small;
+    }
+
+    .enter{
+        height: 20px;
+        font-size: small;
+    }
+    
+}
+
+
+
+/* małe poziome*/
+@media screen and (min-width: 400px) and (min-height: 220px) and (max-height: 540px){
+    #calculator{
+        width: 400px;
+        height: 220px;
+    }
+
+    .block{
+        width: 50%;
+    }
+
+    .input{
+        font-size: 2rem;
+    }
+
+    .stackInput{
+        width: 50%;
+        font-size: 0.8rem;
+        text-align: center;
+        padding: 1%;
+    }
+
+    .block .button-panel .btn{
+        width: 40px;
+        height: 40px;
+    }
+    .btn{
+        font-size: 1rem;
+    }
+
+    .side-button{
+        height: 120px;
+        width: 45px;
+    }
+
+    .function-panel{
+        flex-direction: row;
+    }
+    .enter{
+        height: 25px;
+    }
+}
+
+/* poziome*/
+@media screen and (min-width: 540px) and (min-height: 320px){
+    #calculator{
+        width: 560px;
+        height: 320px;
+    }
+
+    .input{
+        font-size: 1.2rem;
+    }
+    #result{
+        font-size: 3rem;
+    }
+
+    .block{
+        width: 50%;
+    }
+
+    .block .button-panel .btn{
+        width: 60px;
+        height: 60px;
+    }
+
+    .function-panel{
+        flex-direction: row;
+    }
+
+    .side-button{
+        height: 180px;
+        width: 60px;
+    }
+
+    .enter{
+        height: 35px;
+    }
+
+    .btn{
+        font-size: 1.8rem;
+    }
+}
+
+
+
