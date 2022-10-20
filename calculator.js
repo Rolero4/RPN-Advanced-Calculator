@@ -3,21 +3,21 @@ window.onload = function(){
 };
 
 let calculator = {
-    buttons: undefined,
     input: undefined,
-    stack: undefined,
     firstOnStack: undefined,
     secondOnStack: undefined,
-    first_number: 0,
-    current_operand: "",
+    buttons: undefined,
+    stack: undefined,
 
+
+    //init stuff
     init: function(){
         this.buttons = document.querySelectorAll('.btn'); 
-        
         this.input = document.getElementById("result");
         this.firstOnStack = document.getElementById("firstOnStack");
         this.secondOnStack = document.getElementById("secondOnStack");
-        console.log(this.firstOnStack.value);
+        this.stack = [];
+        //console.log(this.firstOnStack.value);
 
         document.getElementById("changeOnStack").addEventListener('click', calculator.swap);
         for(let i = 0; i < this.buttons.length; i++){
@@ -30,19 +30,12 @@ let calculator = {
         let divHtmlText = e.target.innerHTML;
         console.log(divHtmlText);
         switch (divHtmlText) {
-            case "%":
-                calculator.input.value = calculator.input.value/100;
-                break;
-            case "=":
-                calculator.evaluate();
-            break;
-            case "AC":
-                calculator.current_operand= "";
+            case "cancel":
                 calculator.clear();
             break;
-            case "+/-":
-                calculator.changeSign();
-                break;
+            case "enter":
+                calculator.enter();
+            break;
             case "9":
             case "8":
             case "7":
@@ -59,71 +52,59 @@ let calculator = {
             case "-":
             case "×":
             case "÷": 
-            calculator.addOperand(divHtmlText);
-            break;
-            case ",": 
-            if(!calculator.input.value.includes(".") && !calculator.input.value == "")
-                calculator.addNumberToDisplay(".");
             break;
         }
     },
 
     addNumberToDisplay: function(str){
-        let display = calculator.input.value + '';
-        if(display.length < 7 || (display.includes(".") && display.length == 7 && str != 0))
-            calculator.input.value += str;
+        //let display = calculator.input.value + '';
+        //if(display.length < 7 || (display.includes(".") && display.length == 7 && str != 0))
+        calculator.input.value += str;
     },
 
-    changeSign(){
-        calculator.input.value = -calculator.input.value;
-    },
-
+    //clearing whole calcultor
     clear: function(){
         this.input.value = "";
+        this.stack = [];
+        this.stackDisplay();
     },
 
-    addOperand: function(str){
-        if(this.input.value != ""){
-            this.first_number = this.input.value;
-            if( str == "÷")
-                this.current_operand = "/"; 
-            else if(str == "×")
-                this.current_operand= "*";
+
+    enter: function(){
+        this.stack.unshift(this.input.value);
+        calculator.input.value = "";
+        this.stackDisplay();
+    },
+
+    //stack display
+    stackDisplay: function(){
+        if(calculator.stack.length > 0){
+            calculator.firstOnStack.value = calculator.stack[0];
+            if(calculator.stack.length>1)
+                calculator.secondOnStack.value = calculator.stack[1];
             else
-                this.current_operand = str;
-            console.log(this.current_operand);
-            calculator.clear();
+                calculator.secondOnStack.value = "";
         }
-        else if(this.input.value == "" && typeof(calculator.first_number) != undefined){
-            if( str == "÷")
-                this.current_operand = "/"; 
-            else if(str == "×")
-                this.current_operand= "*";
-            else
-                this.current_operand = str;
-        }
+        else{
+            calculator.firstOnStack.value = "";
+            calculator.secondOnStack.value = "";
 
-    },
-
-    evaluate: function(){
-        if(this.current_operand != "" || this.current_operand != undefined){
-            if(this.current_operand == "/" && this.input.value == 0)
-                calculator.input.value = "error"
-            else{
-                let result = eval(this.first_number + this.current_operand+ this.input.value);
-                let display = calculator.input.value + '';
-                if(display.length > 6 )
-                    calculator.input.value = result.toExponential(2);
-                else
-                    calculator.input.value = result;
-            }
         }
     },
 
-
+    //changing displayed numbers of stack
     swap: function(){
-        const temp = calculator.firstOnStack.value;
-        calculator.firstOnStack.value = calculator.secondOnStack.value;
-        calculator.secondOnStack.value = temp; 
-    }
+        if(calculator.stack.length>1){
+            const temp = calculator.stack[0]
+            calculator.stack[0] = calculator.stack[1];
+            calculator.stack[1]= temp; 
+            console.log(calculator.stack);
+            calculator.stackDisplay();
+        }
+    },
+
+    //calculating whole stack
+    evaluate: function(){
+
+    },
 }

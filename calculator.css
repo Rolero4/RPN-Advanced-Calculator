@@ -35,9 +35,9 @@ body{
     width: 100%;
     background-color: black;
     color: white;
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     text-align: right;
-    padding: 2%;
+    padding: 5px;
     border: 1px solid black;
     border-radius: 10px;
     overflow: scroll;
@@ -154,9 +154,6 @@ body{
     #calculator{
         width: 196px;
         height: 378px;
-    }
-    .input{
-        font-size: smaller;
     }
 
     .block .button-panel .btn{
