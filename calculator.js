@@ -51,12 +51,14 @@ let calculator = {
             case "+":
             case "-":
             case "×":
-            case "÷": 
             case "%":
                 calculator.simpleOperand(divHtmlText);
             break;
             case "x^y":
-                calculator.exp();
+                calculator.power();
+            break;
+            case "÷": 
+                calculator.divisionInt();
             break;
         }
     },
@@ -69,14 +71,11 @@ let calculator = {
 
     simpleOperand: function(operation){
         if(calculator.stack.length > 1){
-            const first = calculator.stack[1] + '';
-            const second = calculator.stack[0] + '';
+            const first = '(' + calculator.stack[1] + ')';
+            const second = '(' + calculator.stack[0] + ")";
             calculator.stack.shift();
             calculator.stack.shift();
-
-            if( operation == "÷")
-                operation = "//"; 
-            else if( operation == "×")
+            if( operation == "×")
                 operation = "*";
             operation = operation +'';
 
@@ -86,13 +85,28 @@ let calculator = {
         }
     },
 
-    exp: function(){
+    //Power
+    power: function(){
         if(calculator.stack.length > 1){
             const first = calculator.stack[1];
             const second = calculator.stack[0];
             calculator.stack.shift();
             calculator.stack.shift();
-            calculator.stack.unshift(Math.pow(first, second));
+            if(second>0){
+                calculator.stack.unshift(Math.pow(first, second));
+                calculator.stackDisplay();
+            }
+        }
+    },
+
+    //Integer division
+    divisionInt: function(){
+        if(calculator.stack.length > 1){
+            const first = calculator.stack[1];
+            const second = calculator.stack[0];
+            calculator.stack.shift();
+            calculator.stack.shift();
+            calculator.stack.unshift(Math.floor(first / second));
             calculator.stackDisplay();
         }
     },
