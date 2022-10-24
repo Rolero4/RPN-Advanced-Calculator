@@ -172,7 +172,7 @@ let calculator = {
     //goldbach hipoteza
     slp: function(){
         const MAX = calculator.input.value;
-        if (MAX > 2 || MAX % 2 == 0){
+        if (MAX > 2 && MAX % 2 == 0){
 
             let primes = new Array();
     
