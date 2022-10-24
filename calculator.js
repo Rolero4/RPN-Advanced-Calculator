@@ -152,22 +152,66 @@ let calculator = {
     rlp: function(){
         let value = calculator.input.value;
         let display = "";
+        let numbers = [];
         if ( value != "" && value > 1){
-            let result = value + "= ";
             let i = 2;
             let e = Math.floor(Math.sqrt(value));
             while (i <= e) {
                 while((value % i) == 0) {
-                    result += i + " * ";
+                    numbers.unshift(i);
                     value = Math.floor(value/i);
                     e = Math.floor(Math.sqrt(value));
                 }
                 i++;
             }
-            if (value > 1) display = result + " " + value;
+            if (value > 1){
+                numbers.unshift(value);
+            }
         }
+        const uniqueElements = this.toExp(numbers);
+        let howManyTimes = [];
+        for(let i=0; i< uniqueElements.length; i++){
+            howManyTimes.push(this.howManyTimesInArray(uniqueElements[i], numbers));
+        }
+        console.log(howManyTimes);
+        let rest = "";
+        for(let i = 0; i<uniqueElements.length; i++){
+            rest += uniqueElements[i];
+            if(howManyTimes[i] >1 ){
+                rest += "^"+howManyTimes[i];
+            }
+            if( i< uniqueElements.length -1 ){
+                rest += " × ";
+            }
+        }
+
+        display = calculator.input.value + "= " + rest;
+
         calculator.input.value = display;
     },
+
+    toExp: function(numbers){
+        uniqueElements = [];
+        for(let i = 0; i < numbers.length; i++){
+            if(!uniqueElements.includes(numbers[i])){
+                uniqueElements.unshift(numbers[i])
+            }
+        }
+        return uniqueElements;
+    },
+
+    howManyTimesInArray: function(checkingElement, numbers){
+        let count = 0;
+        for (const element of numbers) {
+            if (element == checkingElement) {
+              count += 1;
+            }
+        }
+        console.log(count);
+        return count;
+    },
+
+
 
     //goldbach hipoteza
     slp: function(){
@@ -281,3 +325,5 @@ let calculator = {
         }
     },
 }
+
+// https://www.youtube.com/watch?v=SUv6Uaggvhc&t=545s
