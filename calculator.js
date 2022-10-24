@@ -28,14 +28,17 @@ let calculator = {
 
     buttonClick: function(e){
         let divHtmlText = e.target.innerHTML;
-        console.log(divHtmlText);
+        //console.log(divHtmlText);
         switch (divHtmlText) {
+            case "delete":
+                calculator.delete();
+                break;
             case "cancel":
                 calculator.clear();
-            break;
-            case "enter":
+                break;
+            case "e<br>n<br>t<br>e<br>r":
                 calculator.enter();
-            break;
+                break;
             case "9":
             case "8":
             case "7":
@@ -47,28 +50,36 @@ let calculator = {
             case "1":
             case "0":
                 calculator.addNumberToDisplay(divHtmlText);
-            break;
+                break;
             case "+":
             case "-":
             case "×":
             case "%":
                 calculator.simpleOperand(divHtmlText);
-            break;
+                break;
             case "x^y":
                 calculator.power();
             break;
             case "÷": 
                 calculator.divisionInt();
-            break;
+                break;
+            case "gcd":
+                calculator.gcd();
+                break;
+            case "rlp":
+                calculator.rlp();
+                break;
+            case "slp":
+                calculator.slp();
+                break;
         }
     },
-
+    //blocked input
     addNumberToDisplay: function(str){
-        //let display = calculator.input.value + '';
-        //if(display.length < 7 || (display.includes(".") && display.length == 7 && str != 0))
         calculator.input.value += str;
     },
 
+    //modulo, mnożenie, dodawanie, odejmowanie
     simpleOperand: function(operation){
         if(calculator.stack.length > 1){
             const first = '(' + calculator.stack[1] + ')';
@@ -111,6 +122,115 @@ let calculator = {
         }
     },
 
+    //Greatest common divisor
+    gcd: function(){
+        if(calculator.stack.length > 1){
+            let a = Math.abs(calculator.stack[1]);
+            let b = Math.abs(calculator.stack[0]);
+            calculator.stack.shift();
+            calculator.stack.shift();
+            let result = 0;
+            if (b > a) {var temp = a; a = b; b = temp;}
+            while (true) {
+                if (b == 0){
+                    result =  a;
+                    break;
+                }
+                a %= b;
+                if (a == 0){
+                    result = b
+                    break;
+                }
+                b %= a;
+            }
+            calculator.stack.unshift(result);
+            calculator.stackDisplay();
+        }
+    },
+
+    //rozkład na czynniki
+    rlp: function(){
+        let value = calculator.input.value;
+        let display = "";
+        if ( value != "" && value > 1){
+            let result = value + "= ";
+            let i = 2;
+            let e = Math.floor(Math.sqrt(value));
+            while (i <= e) {
+                while((value % i) == 0) {
+                    result += i + " * ";
+                    value = Math.floor(value/i);
+                    e = Math.floor(Math.sqrt(value));
+                }
+                i++;
+            }
+            if (value > 1) display = result + " " + value;
+        }
+        calculator.input.value = display;
+    },
+
+    //goldbach hipoteza
+    slp: function(){
+        const MAX = calculator.input.value;
+        if (MAX > 2 || MAX % 2 == 0){
+
+            let primes = new Array();
+    
+            // Utility function for Sieve of Sundaram
+            // In general Sieve of Sundaram, produces
+            // primes smaller than (2*x + 2) for a
+            // number given number x. Since we want
+            // primes smaller than MAX, we reduce
+            // MAX to half. This array is used to
+            // separate numbers of the form i + j + 2*i*j
+            // from others where 1 <= i <= j
+            let marked = new Array(parseInt(MAX / 2) + 100).fill(false);
+    
+            // Main logic of Sundaram. Mark all
+            // numbers which do not generate prime
+            // number by doing 2*i+1
+            for (let i = 1; i <= (Math.sqrt(MAX) - 1) / 2; i++)
+                for (let j = (i * (i + 1)) << 1;
+                    j <= MAX / 2; j = j + 2 * i + 1)
+                    marked[j] = true;
+        
+            // Since 2 is a prime number
+            primes.push(2);
+        
+            // Print other primes. Remaining primes
+            // are of the form 2*i + 1 such that
+            // marked[i] is false.
+            for (let i = 1; i <= MAX / 2; i++)
+                if (marked[i] == false)
+                    primes.push(2 * i + 1);
+    
+            // Check only upto half of number
+            for (let i = 0; primes[i] <= MAX / 2; i++)
+            {
+                // find difference by subtracting
+                // current prime from n
+                let diff = MAX - primes[i];
+        
+                // Search if the difference is also a
+                // prime number
+                if (primes.includes(diff))
+                {
+                    // Express as a sum of primes
+                    this.input.value = MAX+ "= " + primes[i] + " + " + diff;
+                    //without break there is option to print all options
+                    break;
+                }
+            }       
+        }
+    },
+
+
+
+    //clearing input
+    delete: function(){
+        this.input.value = "";
+    },
+
     //clearing whole calcultor
     clear: function(){
         this.input.value = "";
@@ -118,16 +238,23 @@ let calculator = {
         this.stackDisplay();
     },
 
-
+    //move value from display input on stack
     enter: function(){
         if(calculator.input.value != ""){
-            this.stack.unshift(this.input.value);
-            calculator.input.value = "";
-            this.stackDisplay();
+            if(calculator.input.value.includes("=")){
+                const value = calculator.input.value.split("=")
+                this.stack.unshift(value[0]);
+                calculator.input.value = "";
+                this.stackDisplay();
+            }else{
+                this.stack.unshift(this.input.value);
+                calculator.input.value = "";
+                this.stackDisplay();
+            }
         }
     },
 
-    //stack display
+    //display two top values from stack
     stackDisplay: function(){
         if(calculator.stack.length > 0){
             calculator.firstOnStack.value = calculator.stack[0];
