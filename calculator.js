@@ -167,27 +167,28 @@ let calculator = {
             if (value > 1){
                 numbers.unshift(value);
             }
-        }
-        const uniqueElements = this.toExp(numbers);
-        let howManyTimes = [];
-        for(let i=0; i< uniqueElements.length; i++){
-            howManyTimes.push(this.howManyTimesInArray(uniqueElements[i], numbers));
-        }
-        console.log(howManyTimes);
-        let rest = "";
-        for(let i = 0; i<uniqueElements.length; i++){
-            rest += uniqueElements[i];
-            if(howManyTimes[i] >1 ){
-                rest += "^"+howManyTimes[i];
+        
+            const uniqueElements = this.toExp(numbers);
+            let howManyTimes = [];
+            for(let i=0; i< uniqueElements.length; i++){
+                howManyTimes.push(this.howManyTimesInArray(uniqueElements[i], numbers));
             }
-            if( i< uniqueElements.length -1 ){
-                rest += " × ";
+            console.log(howManyTimes);
+            let rest = "";
+            for(let i = 0; i<uniqueElements.length; i++){
+                rest += uniqueElements[i];
+                if(howManyTimes[i] >1 ){
+                    rest += "^"+howManyTimes[i];
+                }
+                if( i< uniqueElements.length -1 ){
+                    rest += " × ";
+                }
             }
+
+            display = calculator.input.value + "= " + rest;
+
+            calculator.input.value = display;
         }
-
-        display = calculator.input.value + "= " + rest;
-
-        calculator.input.value = display;
     },
 
     toExp: function(numbers){
