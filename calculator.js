@@ -76,7 +76,12 @@ let calculator = {
     },
     //blocked input
     addNumberToDisplay: function(str){
-        calculator.input.value += str;
+        if(!calculator.input.innerText.includes("=")){
+            if(calculator.input.innerText == 0)
+                calculator.input.innerText = str;
+            else
+                calculator.input.innerText += str;
+        }
     },
 
     //modulo, mnożenie, dodawanie, odejmowanie
@@ -150,7 +155,7 @@ let calculator = {
 
     //rozkład na czynniki
     rlp: function(){
-        let value = calculator.input.value;
+        let value = calculator.input.innerText;
         let display = "";
         let numbers = [];
         if ( value != "" && value > 1){
@@ -173,7 +178,7 @@ let calculator = {
             for(let i=0; i< uniqueElements.length; i++){
                 howManyTimes.push(this.howManyTimesInArray(uniqueElements[i], numbers));
             }
-            console.log(howManyTimes);
+            //console.log(howManyTimes);
             let rest = "";
             for(let i = 0; i<uniqueElements.length; i++){
                 rest += uniqueElements[i];
@@ -185,9 +190,9 @@ let calculator = {
                 }
             }
 
-            display = calculator.input.value + "= " + rest;
+            display = calculator.input.innerText + "= " + rest;
 
-            calculator.input.value = display;
+            calculator.display(display);
         }
     },
 
@@ -208,7 +213,7 @@ let calculator = {
               count += 1;
             }
         }
-        console.log(count);
+        //console.log(count);
         return count;
     },
 
@@ -216,7 +221,7 @@ let calculator = {
 
     //goldbach hipoteza
     slp: function(){
-        const MAX = calculator.input.value;
+        const MAX = calculator.input.innerText;
         if (MAX > 2 && MAX % 2 == 0){
 
             let primes = new Array();
@@ -261,7 +266,7 @@ let calculator = {
                 if (primes.includes(diff))
                 {
                     // Express as a sum of primes
-                    this.input.value = MAX+ "= " + primes[i] + " + " + diff;
+                    this.input.innerHTML = MAX+ "= " + primes[i] + " + " + diff;
                     //without break there is option to print all options
                     break;
                 }
@@ -273,29 +278,27 @@ let calculator = {
 
     //clearing input
     delete: function(){
-        this.input.value = "";
+        this.input.innerHTML = "0";
     },
 
     //clearing whole calcultor
     clear: function(){
-        this.input.value = "";
+        this.input.innerHTML = "0";
         this.stack = [];
         this.stackDisplay();
     },
 
     //move value from display input on stack
     enter: function(){
-        if(calculator.input.value != ""){
-            if(calculator.input.value.includes("=")){
-                const value = calculator.input.value.split("=")
-                this.stack.unshift(value[0]);
-                calculator.input.value = "";
-                this.stackDisplay();
-            }else{
-                this.stack.unshift(this.input.value);
-                calculator.input.value = "";
-                this.stackDisplay();
-            }
+        if(calculator.input.innerText.includes("=")){
+            const value = calculator.input.innerText.split("=")
+            this.stack.unshift(value[0]);
+            calculator.input.innerHTML = "0";
+            this.stackDisplay();
+        }else{
+            this.stack.unshift(this.input.innerText);
+            calculator.input.innerHTML = "0";
+            this.stackDisplay();
         }
     },
 
@@ -321,9 +324,15 @@ let calculator = {
             const temp = calculator.stack[0]
             calculator.stack[0] = calculator.stack[1];
             calculator.stack[1]= temp; 
-            console.log(calculator.stack);
+            //console.log(calculator.stack);
             calculator.stackDisplay();
         }
+    },
+
+
+    display: function(str){
+        calculator.input.innerHTML = "\\(" + str + "\\)";
+        MathJax.typeset();
     },
 }
 

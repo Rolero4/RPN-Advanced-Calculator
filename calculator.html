@@ -10,10 +10,14 @@
     />
     <link rel="stylesheet" href="calculator.css">
     <title>Calculator</title>
+
+    
 </head>
 <body>
+    <output></output>
+
     <div id="calculator">
-        <input type="text" id="result" class="input" placeholder="0" disabled maxlength="8">
+        <div id="result">0</div>
         <div class="stack">
             <input type="text" id="firstOnStack" class="input stackInput" placeholder="0" disabled>
             <button id="changeOnStack"> <i class="fa fa-exchange-alt"></i></button>
@@ -38,7 +42,7 @@
                 <div class="button-panel">
                     <button class="btn operation-button">+</button>
                     <button class="btn operation-button">×</button>
-                    <button class="btn operation-button">x^y</button>
+                    <button class="btn operation-button">\(x^y\)</button>
                     <button class="btn operation-button">-</button>
                     <button class="btn operation-button">÷</button>
                     <button class="btn operation-button">%</button>
@@ -56,4 +60,7 @@
     </div>
 </body>
 <script src="calculator.js"></script>
+<script src="jquery.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </html>
