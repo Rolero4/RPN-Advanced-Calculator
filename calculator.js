@@ -28,7 +28,7 @@ let calculator = {
 
     buttonClick: function(e){
         let divHtmlText = e.target.innerHTML;
-        //console.log(divHtmlText);
+        console.log(divHtmlText);
         switch (divHtmlText) {
             case "delete":
                 calculator.delete();
@@ -304,17 +304,22 @@ let calculator = {
 
     //display two top values from stack
     stackDisplay: function(){
-        if(calculator.stack.length > 0){
-            calculator.firstOnStack.value = calculator.stack[0];
-            if(calculator.stack.length>1)
-                calculator.secondOnStack.value = calculator.stack[1];
-            else
-                calculator.secondOnStack.value = "";
+        if(calculator.stack[0] >= Number.MAX_VALUE){
+            calculator.clear();
+            calculator.input = "Błąd";
         }
         else{
-            calculator.firstOnStack.value = "";
-            calculator.secondOnStack.value = "";
-
+            if(calculator.stack.length > 0){
+                calculator.firstOnStack.value = calculator.stack[0];
+                if(calculator.stack.length>1)
+                    calculator.secondOnStack.value = calculator.stack[1];
+                else
+                    calculator.secondOnStack.value = "";
+            }
+            else{
+                calculator.firstOnStack.value = "";
+                calculator.secondOnStack.value = "";
+            }
         }
     },
 
